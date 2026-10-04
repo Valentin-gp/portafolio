@@ -1,0 +1,11 @@
+.states
+.web
+assets/external/
+.web/
+.states/
+__pycache__/
+*.py[cod]
+.venv/
+public/
+*.db
+.DS_Store
