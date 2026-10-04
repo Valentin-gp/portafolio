@@ -58,6 +58,10 @@ CERTIFICACIONES = [
 
 
 # ===================== Piezas reutilizables =====================
+# Reflex convierte cada <a> en un Link de React Router; sin esto, "/cv.pdf" se trata como una página (404)
+ARCHIVO = {"reloadDocument": True}
+
+
 def t(texto, clase):
     return E.span(texto, class_name=clase)
 
@@ -68,7 +72,7 @@ def chips(items):
 
 def boton(texto, href, principal=False, chico=False, descarga=False, fantasma=False):
     clase = "ghost" if fantasma else "btn" + ("" if principal else " alt") + (" sm" if chico else "")
-    extra = {"download": True} if descarga else {}
+    extra = {"download": True, "custom_attrs": ARCHIVO} if descarga else {}
     return E.a(texto, href=href, class_name=clase, **extra)
 
 
@@ -247,7 +251,7 @@ def formacion():
                       linea_tiempo(ESTUDIOS), class_name="rv"),
                 E.div(E.p("Cursos", class_name="kicker"), E.h2("Certificaciones"),
                       linea_tiempo(CERTIFICACIONES),
-                      E.p("Lista completa en mi ", E.a("CV", href="/cv.pdf"), ".", class_name="note"),
+                      E.p("Lista completa en mi ", E.a("CV", href="/cv.pdf", custom_attrs=ARCHIVO), ".", class_name="note"),
                       class_name="rv"),
                 class_name="two",
             ),
@@ -311,6 +315,7 @@ def index() -> rx.Component:
 
 app = rx.App(
     html_lang="es",
+    enable_state=False,  # sin backend: evita que el navegador intente abrir el WebSocket /_event cada segundo
     head_components=[rx.script(src="/interacciones.js")],
     stylesheets=[
         "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=JetBrains+Mono:wght@400;600&display=swap",
